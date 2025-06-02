@@ -346,5 +346,3 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
 };
 
 export default ResumePreview;
-
-export default ResumePreview;
