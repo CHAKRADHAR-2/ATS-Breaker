@@ -297,21 +297,46 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
         )}
       </Card>
 
-      {/* Print styles */}
+      {/* Enhanced Print styles to remove headers and footers */}
       <style dangerouslySetInnerHTML={{
         __html: `
           @media print {
+            @page {
+              margin: 0.5in;
+              size: A4;
+            }
+            
             body * {
               visibility: hidden;
             }
+            
             .print-area, .print-area * {
               visibility: visible;
             }
+            
             .print-area {
               position: absolute;
               left: 0;
               top: 0;
               width: 100%;
+              background: white !important;
+              -webkit-print-color-adjust: exact;
+              color-adjust: exact;
+            }
+
+            /* Hide browser headers and footers */
+            html, body {
+              background: white !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+          }
+          
+          /* Additional CSS to ensure clean printing */
+          @media print {
+            .print-area {
+              box-shadow: none !important;
+              border: none !important;
             }
           }
         `
@@ -319,5 +344,7 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
     </div>
   );
 };
+
+export default ResumePreview;
 
 export default ResumePreview;
