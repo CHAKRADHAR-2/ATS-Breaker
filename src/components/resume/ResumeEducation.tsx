@@ -21,7 +21,13 @@ const ResumeEducation = ({ education }: ResumeEducationProps) => {
                 {edu.degree} in {edu.field}
               </h3>
               <p className="text-gray-700">{edu.institution}</p>
-              {edu.gpa && <p className="text-gray-600 text-sm">GPA: {edu.gpa}</p>}
+              {(edu.gpa || edu.percentage) && (
+                <div className="text-gray-600 text-sm">
+                  {edu.gpa && <span>GPA: {edu.gpa}</span>}
+                  {edu.gpa && edu.percentage && <span> | </span>}
+                  {edu.percentage && <span>Percentage: {edu.percentage}</span>}
+                </div>
+              )}
             </div>
             <div className="text-right text-sm text-gray-600">
               {formatDate(edu.graduation)}
