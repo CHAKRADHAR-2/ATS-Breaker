@@ -20,9 +20,18 @@ const ResumeProjects = ({ projects }: ResumeProjectsProps) => {
             <div className="flex justify-between items-start mb-1">
               <div>
                 <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                  {project.name}
-                  {project.link && (
-                    <ExternalLink className="w-3 h-3 text-gray-500" />
+                  {project.link ? (
+                    <a 
+                      href={project.link.startsWith('http') ? project.link : `https://${project.link}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="hover:text-blue-600 flex items-center gap-1"
+                    >
+                      {project.name}
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  ) : (
+                    project.name
                   )}
                 </h3>
                 <div className="flex flex-wrap gap-1 mt-1">
