@@ -6,13 +6,13 @@ const ResumePrintStyles = () => {
           @page {
             margin: 0.5in;
             size: A4;
-            /* Hide headers and footers completely */
-            @top-left { content: ""; }
-            @top-center { content: ""; }
-            @top-right { content: ""; }
-            @bottom-left { content: ""; }
-            @bottom-center { content: ""; }
-            @bottom-right { content: ""; }
+            /* Completely remove headers and footers */
+            @top-left { content: "" !important; }
+            @top-center { content: "" !important; }
+            @top-right { content: "" !important; }
+            @bottom-left { content: "" !important; }
+            @bottom-center { content: "" !important; }
+            @bottom-right { content: "" !important;
           }
           
           /* Hide everything except the resume */
@@ -35,6 +35,9 @@ const ResumePrintStyles = () => {
             box-shadow: none !important;
             border: none !important;
             page-break-inside: auto !important;
+            height: auto !important;
+            min-height: auto !important;
+            max-height: none !important;
           }
 
           /* Remove browser default headers and footers */
@@ -44,6 +47,8 @@ const ResumePrintStyles = () => {
             padding: 0 !important;
             -webkit-print-color-adjust: exact !important;
             color-adjust: exact !important;
+            width: 100% !important;
+            height: auto !important;
           }
           
           /* Allow natural page breaks based on content */
@@ -55,6 +60,15 @@ const ResumePrintStyles = () => {
           /* Hide any browser UI elements */
           .no-print {
             display: none !important;
+          }
+          
+          /* Remove any browser chrome */
+          body::before,
+          body::after,
+          html::before,
+          html::after {
+            display: none !important;
+            content: "" !important;
           }
           
           /* Optimize text for printing */
@@ -83,13 +97,6 @@ const ResumePrintStyles = () => {
           a {
             color: inherit !important;
             text-decoration: none !important;
-          }
-
-          /* Remove forced page breaks that were limiting to 2 pages */
-          .print-area {
-            height: auto !important;
-            min-height: auto !important;
-            max-height: none !important;
           }
         }
       `
