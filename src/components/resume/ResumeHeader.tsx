@@ -1,4 +1,5 @@
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Globe, Github } from "lucide-react";
 import { ResumeData } from "./types";
 
 interface ResumeHeaderProps {
@@ -16,13 +17,17 @@ const ResumeHeader = ({ personalInfo }: ResumeHeaderProps) => {
         {personalInfo.email && (
           <div className="flex items-center gap-1">
             <Mail className="w-3 h-3" />
-            {personalInfo.email}
+            <a href={`mailto:${personalInfo.email}`} className="hover:text-blue-600">
+              {personalInfo.email}
+            </a>
           </div>
         )}
         {personalInfo.phone && (
           <div className="flex items-center gap-1">
             <Phone className="w-3 h-3" />
-            {personalInfo.phone}
+            <a href={`tel:${personalInfo.phone}`} className="hover:text-blue-600">
+              {personalInfo.phone}
+            </a>
           </div>
         )}
         {personalInfo.location && (
@@ -34,13 +39,40 @@ const ResumeHeader = ({ personalInfo }: ResumeHeaderProps) => {
         {personalInfo.linkedin && (
           <div className="flex items-center gap-1">
             <Linkedin className="w-3 h-3" />
-            {personalInfo.linkedin}
+            <a 
+              href={personalInfo.linkedin.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-blue-600"
+            >
+              {personalInfo.linkedin}
+            </a>
+          </div>
+        )}
+        {personalInfo.github && (
+          <div className="flex items-center gap-1">
+            <Github className="w-3 h-3" />
+            <a 
+              href={personalInfo.github.startsWith('http') ? personalInfo.github : `https://${personalInfo.github}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-blue-600"
+            >
+              {personalInfo.github}
+            </a>
           </div>
         )}
         {personalInfo.portfolio && (
           <div className="flex items-center gap-1">
             <Globe className="w-3 h-3" />
-            {personalInfo.portfolio}
+            <a 
+              href={personalInfo.portfolio.startsWith('http') ? personalInfo.portfolio : `https://${personalInfo.portfolio}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-blue-600"
+            >
+              {personalInfo.portfolio}
+            </a>
           </div>
         )}
       </div>
