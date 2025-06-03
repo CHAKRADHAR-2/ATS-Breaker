@@ -75,51 +75,37 @@ const ATSScoreChecker = ({ data }: ATSScoreCheckerProps) => {
       {
         label: "Contact Information Complete",
         passed: !!(data.personalInfo.fullName && data.personalInfo.email && data.personalInfo.phone),
-        weight: 12
+        weight: 15
       },
       {
         label: "Professional Summary Present",
         passed: data.personalInfo.summary.length >= 100,
-        weight: 10
+        weight: 15
       },
       {
         label: "Work Experience Added",
         passed: data.experience.length > 0,
-        weight: 20
-      },
-      {
-        label: "Quantified Achievements",
-        passed: data.experience.some(exp => 
-          exp.achievements.some(achievement => 
-            /\d+/.test(achievement) // Contains numbers
-          )
-        ),
-        weight: 15
+        weight: 25
       },
       {
         label: "Technical Skills Listed",
         passed: data.skills.technical.length >= 5,
-        weight: 12
+        weight: 15
       },
       {
         label: "Education Information",
         passed: data.education.length > 0,
-        weight: 8
+        weight: 10
       },
       {
         label: "Projects Showcased",
         passed: data.projects.length > 0,
-        weight: 10
+        weight: 12
       },
       {
         label: "Relevant Certifications",
         passed: data.certificates.length > 0,
         weight: 8
-      },
-      {
-        label: "Keyword Optimization",
-        passed: calculateKeywordDensity() > 0.02, // 2% keyword density
-        weight: 5
       }
     ];
 
@@ -130,21 +116,6 @@ const ATSScoreChecker = ({ data }: ATSScoreCheckerProps) => {
     }, 0);
     
     setScore(totalScore);
-  };
-
-  const calculateKeywordDensity = () => {
-    const allText = [
-      data.personalInfo.summary,
-      ...data.experience.flatMap(exp => exp.achievements),
-      ...data.projects.map(proj => proj.description),
-      ...data.skills.technical,
-      ...data.skills.soft
-    ].join(" ").toLowerCase();
-    
-    const commonKeywords = ["software", "development", "management", "project", "team", "lead", "engineer", "design", "analysis"];
-    const keywordMatches = commonKeywords.filter(keyword => allText.includes(keyword)).length;
-    
-    return keywordMatches / allText.split(" ").length;
   };
 
   const getScoreColor = (score: number) => {
@@ -202,12 +173,11 @@ const ATSScoreChecker = ({ data }: ATSScoreCheckerProps) => {
               <ul className="space-y-1">
                 {!checks[0]?.passed && <li>• Complete all contact information</li>}
                 {!checks[1]?.passed && <li>• Add a detailed professional summary (100+ chars)</li>}
-                {!checks[2]?.passed && <li>• Add work experience entries</li>}
-                {!checks[3]?.passed && <li>• Include numbers and metrics in achievements</li>}
-                {!checks[4]?.passed && <li>• List at least 5 technical skills</li>}
-                {!checks[5]?.passed && <li>• Add education information</li>}
-                {!checks[6]?.passed && <li>• Showcase key projects with technologies</li>}
-                {!checks[7]?.passed && <li>• Add relevant certifications</li>}
+                {!checks[2]?.passed && <li>• Add work experience entries with detailed achievements</li>}
+                {!checks[3]?.passed && <li>• List at least 5 technical skills</li>}
+                {!checks[4]?.passed && <li>• Add education information</li>}
+                {!checks[5]?.passed && <li>• Showcase key projects with technologies</li>}
+                {!checks[6]?.passed && <li>• Add relevant certifications</li>}
               </ul>
             </div>
           </div>
