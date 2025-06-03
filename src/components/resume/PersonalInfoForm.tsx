@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { User, Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
+import { User, Mail, Phone, MapPin, Linkedin, Globe, Github } from "lucide-react";
 
 interface PersonalInfo {
   fullName: string;
@@ -12,6 +12,7 @@ interface PersonalInfo {
   location: string;
   linkedin: string;
   portfolio: string;
+  github: string;
   summary: string;
 }
 
@@ -104,6 +105,20 @@ const PersonalInfoForm = ({ data, onChange }: PersonalInfoFormProps) => {
               value={data.linkedin}
               onChange={(e) => handleChange("linkedin", e.target.value)}
               placeholder="linkedin.com/in/johndoe"
+              className="mt-1"
+            />
+          </div>
+          
+          <div>
+            <Label htmlFor="github" className="text-sm font-medium text-gray-700 flex items-center gap-1">
+              <Github className="w-4 h-4" />
+              GitHub Profile
+            </Label>
+            <Input
+              id="github"
+              value={data.github}
+              onChange={(e) => handleChange("github", e.target.value)}
+              placeholder="github.com/johndoe"
               className="mt-1"
             />
           </div>
