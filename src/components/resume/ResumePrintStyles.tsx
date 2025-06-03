@@ -46,7 +46,7 @@ const ResumePrintStyles = () => {
             color-adjust: exact !important;
           }
           
-          /* Ensure proper page breaks */
+          /* Allow natural page breaks based on content */
           .resume-section {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
@@ -77,6 +77,19 @@ const ResumePrintStyles = () => {
           h3 {
             font-size: 13px !important;
             font-weight: 600 !important;
+          }
+
+          /* Make sure links don't break in print */
+          a {
+            color: inherit !important;
+            text-decoration: none !important;
+          }
+
+          /* Remove forced page breaks that were limiting to 2 pages */
+          .print-area {
+            height: auto !important;
+            min-height: auto !important;
+            max-height: none !important;
           }
         }
       `
