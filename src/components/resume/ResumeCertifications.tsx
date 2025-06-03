@@ -20,9 +20,18 @@ const ResumeCertifications = ({ certificates }: ResumeCertificationsProps) => {
             <div>
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                 <Award className="w-3 h-3" />
-                {cert.name}
-                {cert.url && (
-                  <ExternalLink className="w-3 h-3 text-gray-500" />
+                {cert.url ? (
+                  <a 
+                    href={cert.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-blue-600 flex items-center gap-1"
+                  >
+                    {cert.name}
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                ) : (
+                  cert.name
                 )}
               </h3>
               <p className="text-gray-700">{cert.issuer}</p>
@@ -32,9 +41,6 @@ const ResumeCertifications = ({ certificates }: ResumeCertificationsProps) => {
             </div>
             <div className="text-right text-sm text-gray-600">
               <p>Issued: {formatDate(cert.issueDate)}</p>
-              {cert.expiryDate && (
-                <p>Expires: {formatDate(cert.expiryDate)}</p>
-              )}
             </div>
           </div>
         ))}
