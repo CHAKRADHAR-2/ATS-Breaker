@@ -12,6 +12,7 @@ interface Education {
   field: string;
   graduation: string;
   gpa?: string;
+  percentage?: string;
 }
 
 interface EducationFormProps {
@@ -27,7 +28,8 @@ const EducationForm = ({ data, onChange }: EducationFormProps) => {
       degree: "",
       field: "",
       graduation: "",
-      gpa: ""
+      gpa: "",
+      percentage: ""
     };
     onChange([...data, newEdu]);
   };
@@ -132,6 +134,16 @@ const EducationForm = ({ data, onChange }: EducationFormProps) => {
                   value={education.gpa}
                   onChange={(e) => updateEducation(education.id, "gpa", e.target.value)}
                   placeholder="3.8/4.0"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor={`percentage-${education.id}`}>Percentage (Optional)</Label>
+                <Input
+                  id={`percentage-${education.id}`}
+                  value={education.percentage}
+                  onChange={(e) => updateEducation(education.id, "percentage", e.target.value)}
+                  placeholder="85%"
                 />
               </div>
             </div>
