@@ -6,6 +6,7 @@ export interface ResumeData {
     location: string;
     linkedin: string;
     portfolio: string;
+    github: string;
     summary: string;
   };
   experience: Array<{
@@ -30,6 +31,7 @@ export interface ResumeData {
     field: string;
     graduation: string;
     gpa?: string;
+    percentage?: string;
   }>;
   projects: Array<{
     id: string;
@@ -46,7 +48,6 @@ export interface ResumeData {
     name: string;
     issuer: string;
     issueDate: string;
-    expiryDate?: string;
     credentialId?: string;
     url?: string;
   }>;
