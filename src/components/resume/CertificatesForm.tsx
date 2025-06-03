@@ -10,7 +10,6 @@ interface Certificate {
   name: string;
   issuer: string;
   issueDate: string;
-  expiryDate?: string;
   credentialId?: string;
   url?: string;
 }
@@ -27,7 +26,6 @@ const CertificatesForm = ({ data, onChange }: CertificatesFormProps) => {
       name: "",
       issuer: "",
       issueDate: "",
-      expiryDate: "",
       credentialId: "",
       url: ""
     };
@@ -114,17 +112,6 @@ const CertificatesForm = ({ data, onChange }: CertificatesFormProps) => {
                 </div>
 
                 <div>
-                  <Label htmlFor={`cert-expiry-date-${certificate.id}`}>Expiry Date</Label>
-                  <Input
-                    id={`cert-expiry-date-${certificate.id}`}
-                    type="month"
-                    value={certificate.expiryDate}
-                    onChange={(e) => updateCertificate(certificate.id, 'expiryDate', e.target.value)}
-                    placeholder="Leave empty if no expiry"
-                  />
-                </div>
-
-                <div>
                   <Label htmlFor={`cert-credential-${certificate.id}`}>Credential ID</Label>
                   <Input
                     id={`cert-credential-${certificate.id}`}
@@ -134,7 +121,7 @@ const CertificatesForm = ({ data, onChange }: CertificatesFormProps) => {
                   />
                 </div>
 
-                <div>
+                <div className="md:col-span-2">
                   <Label htmlFor={`cert-url-${certificate.id}`}>Certificate URL</Label>
                   <div className="relative">
                     <Input
