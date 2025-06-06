@@ -2,25 +2,21 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { ResumeData } from "./types";
-import ResumeHeader from "./ResumeHeader";
-import ResumeSummary from "./ResumeSummary";
-import ResumeExperience from "./ResumeExperience";
-import ResumeProjects from "./ResumeProjects";
-import ResumeSkills from "./ResumeSkills";
-import ResumeCertifications from "./ResumeCertifications";
-import ResumeEducation from "./ResumeEducation";
-import ResumePrintStyles from "./ResumePrintStyles";
+import { templates } from "./templates/templateDefinitions";
+import TemplatedResumePreview from "./templates/TemplatedResumePreview";
 
 interface ResumePreviewProps {
   data: ResumeData;
+  selectedTemplate?: string;
 }
 
-const ResumePreview = ({ data }: ResumePreviewProps) => {
+const ResumePreview = ({ data, selectedTemplate = "modern-blue" }: ResumePreviewProps) => {
+  const template = templates.find(t => t.id === selectedTemplate) || templates[0];
+
   const handleExportPDF = () => {
     const resumeElement = document.querySelector('.print-area');
     
     if (resumeElement) {
-      // Create a new window with complete control over the document
       const printWindow = window.open('', '_blank', 'width=800,height=600');
       
       if (printWindow) {
@@ -29,13 +25,12 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
           <html>
           <head>
             <meta charset="utf-8">
-            <title></title>
+            <title>Resume</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <style>
               @page {
                 margin: 0.5in;
                 size: A4;
-                /* Remove headers and footers */
                 @top-left { content: ""; }
                 @top-center { content: ""; }
                 @top-right { content: ""; }
@@ -44,34 +39,16 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
                 @bottom-right { content: ""; }
               }
               
-              /* Hide all browser UI elements */
-              @media print {
-                html, body {
-                  margin: 0 !important;
-                  padding: 0 !important;
-                  background: white !important;
-                  color: black !important;
-                  font-family: system-ui, -apple-system, sans-serif !important;
-                  -webkit-print-color-adjust: exact !important;
-                  color-adjust: exact !important;
-                }
-                
-                /* Remove any browser-generated content */
-                * {
-                  box-sizing: border-box !important;
-                }
-                
-                /* Ensure no page breaks in sections */
-                .resume-section {
-                  page-break-inside: avoid !important;
-                  break-inside: avoid !important;
-                }
-              }
-              
-              body {
-                font-family: system-ui, -apple-system, sans-serif;
+              * {
                 margin: 0;
                 padding: 0;
+                box-sizing: border-box;
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+              }
+              
+              html, body {
+                font-family: system-ui, -apple-system, sans-serif;
                 background: white;
                 color: black;
                 font-size: 12px;
@@ -80,43 +57,17 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
                 height: auto;
               }
               
-              * {
-                box-sizing: border-box;
-              }
-              
               .resume-section {
                 page-break-inside: avoid;
                 break-inside: avoid;
+                margin-bottom: 16px;
               }
               
-              h1 {
-                font-size: 18px;
-                font-weight: bold;
-                margin: 0 0 8px 0;
-              }
-              
-              h2 {
-                font-size: 14px;
-                font-weight: 600;
-                margin: 16px 0 8px 0;
-                border-bottom: 1px solid #e5e5e5;
-                padding-bottom: 4px;
-              }
-              
-              h3 {
-                font-size: 13px;
-                font-weight: 600;
-                margin: 8px 0 4px 0;
-              }
-              
-              p, li {
-                margin: 4px 0;
-              }
-              
-              ul {
-                margin: 0;
-                padding-left: 16px;
-              }
+              h1 { font-size: 18px; font-weight: bold; margin: 0 0 8px 0; }
+              h2 { font-size: 14px; font-weight: 600; margin: 16px 0 8px 0; border-bottom: 1px solid #e5e5e5; padding-bottom: 4px; }
+              h3 { font-size: 13px; font-weight: 600; margin: 8px 0 4px 0; }
+              p, li { margin: 4px 0; }
+              ul { margin: 0; padding-left: 16px; }
               
               .text-center { text-align: center; }
               .flex { display: flex; }
@@ -154,6 +105,11 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
               .leading-relaxed { line-height: 1.6; }
               .list-disc { list-style-type: disc; }
               .list-inside { list-style-position: inside; }
+              .border-gray-200 { border-color: #e5e5e5; }
+              .grid { display: grid; }
+              .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+              .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+              .col-span-2 { grid-column: span 2 / span 2; }
               
               .w-3 { width: 12px; }
               .h-3 { height: 12px; }
@@ -161,6 +117,8 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
               svg {
                 display: inline-block;
                 vertical-align: middle;
+                width: 12px;
+                height: 12px;
               }
 
               a {
@@ -172,12 +130,9 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
           <body>
             ${resumeElement.innerHTML}
             <script>
-              // Wait for content to load, then print with no headers/footers
               window.onload = function() {
                 setTimeout(function() {
-                  // Try to print without headers/footers
                   window.print();
-                  // Close the window after printing
                   setTimeout(function() {
                     window.close();
                   }, 100);
@@ -192,7 +147,6 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
         printWindow.focus();
       }
     } else {
-      // Fallback to regular print
       window.print();
     }
   };
@@ -202,40 +156,34 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
       <div className="flex items-center justify-between no-print">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">Resume Preview</h3>
-          <p className="text-sm text-gray-600">This is how your resume will look to employers</p>
+          <p className="text-sm text-gray-600">
+            Using template: <span className="font-medium">{template.name}</span> - This is how your resume will look to employers
+          </p>
         </div>
-        <Button onClick={handleExportPDF} className="flex items-center gap-2">
+        <Button 
+          onClick={handleExportPDF} 
+          className="flex items-center gap-2"
+          data-export="pdf"
+        >
           <Download className="w-4 h-4" />
           Export as PDF
         </Button>
       </div>
 
-      {/* Resume Preview */}
-      <Card className="p-8 bg-white max-w-4xl mx-auto print-area" style={{ fontSize: "12px", lineHeight: "1.4" }}>
-        <div className="resume-section">
-          <ResumeHeader personalInfo={data.personalInfo} />
-        </div>
-        <div className="resume-section">
-          <ResumeSummary summary={data.personalInfo.summary} />
-        </div>
-        <div className="resume-section">
-          <ResumeExperience experience={data.experience} />
-        </div>
-        <div className="resume-section">
-          <ResumeProjects projects={data.projects} />
-        </div>
-        <div className="resume-section">
-          <ResumeSkills skills={data.skills} />
-        </div>
-        <div className="resume-section">
-          <ResumeCertifications certificates={data.certificates} />
-        </div>
-        <div className="resume-section">
-          <ResumeEducation education={data.education} />
+      {/* Resume Preview with Template - Fixed container */}
+      <Card className="p-6 bg-white max-w-4xl mx-auto print-area overflow-hidden" 
+            style={{ 
+              fontSize: "12px", 
+              lineHeight: "1.4", 
+              width: "8.5in",
+              minHeight: "11in", 
+              maxHeight: "11in",
+              pageBreakAfter: "always"
+            }}>
+        <div className="w-full h-full overflow-hidden">
+          <TemplatedResumePreview data={data} template={template} />
         </div>
       </Card>
-
-      <ResumePrintStyles />
     </div>
   );
 };
