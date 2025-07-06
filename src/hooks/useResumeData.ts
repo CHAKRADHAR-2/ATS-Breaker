@@ -14,7 +14,14 @@ const initialResumeData: ResumeData = {
   },
   experience: [],
   skills: {
-    technical: [],
+    technical: {
+      frontend: [],
+      backend: [],
+      databases: [],
+      cloud: [],
+      tools: [],
+      other: []
+    },
     soft: [],
     languages: []
   },
@@ -48,12 +55,42 @@ const saveToStorage = (data: ResumeData) => {
   }
 };
 
+// Migration function to convert old skills format to new format
+const migrateSkillsData = (data: any): ResumeData => {
+  if (!data || !data.skills) {
+    return { ...initialResumeData };
+  }
+
+  // If technical skills is already in new format, return as is
+  if (data.skills.technical && typeof data.skills.technical === 'object' && !Array.isArray(data.skills.technical)) {
+    return { ...initialResumeData, ...data };
+  }
+
+  // If technical skills is in old format (array), migrate it
+  const oldTechnicalSkills = Array.isArray(data.skills.technical) ? data.skills.technical : [];
+  
+  return {
+    ...initialResumeData,
+    ...data,
+    skills: {
+      ...data.skills,
+      technical: {
+        frontend: [],
+        backend: [],
+        databases: [],
+        cloud: [],
+        tools: [],
+        other: oldTechnicalSkills // Put all old skills in 'other' category
+      }
+    }
+  };
+};
+
 const loadFromStorage = (): ResumeData => {
   try {
     if (typeof window === 'undefined') return initialResumeData;
     
     const savedData = localStorage.getItem(STORAGE_KEY);
-    const savedVersion = localStorage.getItem(STORAGE_VERSION_KEY);
     
     if (!savedData) {
       console.log("No saved data found");
@@ -66,14 +103,14 @@ const loadFromStorage = (): ResumeData => {
     if (parsed.data && parsed.version) {
       if (parsed.version === CURRENT_VERSION && parsed.data.personalInfo) {
         console.log("Loaded resume data from storage");
-        return { ...initialResumeData, ...parsed.data };
+        return migrateSkillsData(parsed.data);
       }
     }
     
     // Handle old format data
     if (parsed && typeof parsed === 'object' && parsed.personalInfo) {
       console.log("Migrating old format data");
-      return { ...initialResumeData, ...parsed };
+      return migrateSkillsData(parsed);
     }
     
     console.log("Invalid data format, using initial data");
@@ -111,7 +148,7 @@ export const useResumeData = () => {
         try {
           const parsed = JSON.parse(e.newValue);
           if (parsed.data && parsed.data.personalInfo) {
-            setResumeData({ ...initialResumeData, ...parsed.data });
+            setResumeData(migrateSkillsData(parsed.data));
             console.log("Data synchronized from another tab");
           }
         } catch (error) {
