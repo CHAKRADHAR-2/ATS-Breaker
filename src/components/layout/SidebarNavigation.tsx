@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { FileText, Eye, Star, FolderOpen, Award } from "lucide-react";
 import ATSScoreChecker from "@/components/resume/ATSScoreChecker";
 import { ResumeData } from "@/components/resume/types";
+import { createCompatibleResumeData } from "@/components/resume/skillsUtils";
 
 interface SidebarNavigationProps {
   activeSection: string;
@@ -21,6 +22,8 @@ const sections = [
 ];
 
 const SidebarNavigation = ({ activeSection, onSectionChange, resumeData }: SidebarNavigationProps) => {
+  const compatibleResumeData = createCompatibleResumeData(resumeData);
+
   return (
     <Card className="p-6 sticky top-8">
       <h3 className="font-semibold text-gray-900 mb-4">Resume Sections</h3>
@@ -44,7 +47,7 @@ const SidebarNavigation = ({ activeSection, onSectionChange, resumeData }: Sideb
         })}
       </nav>
 
-      <ATSScoreChecker data={resumeData} />
+      <ATSScoreChecker data={compatibleResumeData} />
     </Card>
   );
 };
