@@ -5,9 +5,19 @@ interface ResumeSkillsProps {
 }
 
 const ResumeSkills = ({ skills }: ResumeSkillsProps) => {
-  const hasSkills = skills.technical.length > 0 || skills.soft.length > 0 || skills.languages.length > 0;
+  const hasAnyTechnicalSkills = Object.values(skills.technical).some(categorySkills => categorySkills.length > 0);
+  const hasSkills = hasAnyTechnicalSkills || skills.soft.length > 0 || skills.languages.length > 0;
   
   if (!hasSkills) return null;
+
+  const technicalCategories = [
+    { key: 'frontend', label: 'Frontend' },
+    { key: 'backend', label: 'Backend' },
+    { key: 'databases', label: 'Databases' },
+    { key: 'cloud', label: 'Cloud & DevOps' },
+    { key: 'tools', label: 'Tools & Frameworks' },
+    { key: 'other', label: 'Other Technologies' }
+  ];
 
   return (
     <div className="mb-6">
@@ -15,12 +25,23 @@ const ResumeSkills = ({ skills }: ResumeSkillsProps) => {
         SKILLS
       </h2>
       <div className="space-y-2">
-        {skills.technical.length > 0 && (
-          <div>
-            <span className="font-medium text-gray-900">Technical: </span>
-            <span className="text-gray-700">{skills.technical.join(", ")}</span>
+        {/* Technical Skills - organized by category */}
+        {hasAnyTechnicalSkills && (
+          <div className="space-y-1">
+            {technicalCategories.map(({ key, label }) => {
+              const categorySkills = skills.technical[key as keyof typeof skills.technical];
+              if (categorySkills.length === 0) return null;
+              
+              return (
+                <div key={key}>
+                  <span className="font-medium text-gray-900">{label}: </span>
+                  <span className="text-gray-700">{categorySkills.join(", ")}</span>
+                </div>
+              );
+            })}
           </div>
         )}
+        
         {skills.soft.length > 0 && (
           <div>
             <span className="font-medium text-gray-900">Soft Skills: </span>
